@@ -15,8 +15,10 @@ const Profile = () => {
     if (userid) {
       let newId = decode(userid);
       const docRef = doc(db, "Users", `${newId}`);
+      console.log(docRef, "docRefdocRefdocRef==>");
       const docSnap = await getDoc(docRef);
-      if (docRef) {
+      console.log(docSnap.exists(), "docSnapdocSnapdocSnap==>");
+      if (docSnap.exists()) {
         setCollection(docSnap.data());
       } else {
         console.log("user not found");
@@ -30,6 +32,7 @@ const Profile = () => {
     fetchPost();
   }, []);
 
+  console.log(Object.keys(collection).length, "Object.keys(collection).length");
   return (
     <Container>
       <div className="p-2">
@@ -45,7 +48,7 @@ const Profile = () => {
           </div>
         </div>
         <Row xs={2} sm={3} className="layout-grid">
-          {Object.keys(collection).length > 0 &&
+          {Object.keys(collection).length > 0 ? (
             Object.keys(collection).map((item) => {
               return (
                 <Col>
@@ -55,7 +58,10 @@ const Profile = () => {
                   </div>
                 </Col>
               );
-            })}
+            })
+          ) : (
+            <>Collection not found</>
+          )}
         </Row>
       </div>
     </Container>
